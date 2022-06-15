@@ -1,0 +1,58 @@
+dependencies:
+  - Uniswap/v3-core@1.0.0
+compiler:
+  solc:
+    remappings:
+      - '@uniswap=Uniswap/v3-core@1.0.0'
+
+
+dotenv: .env
+
+networks:
+  mainnet:
+    eth_usd_price_feed: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419'
+    btc_usd_price_feed: '0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c'
+    dai_usd_price_feed: '0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9'
+    weth_token: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
+    dai_token: '0x6B175474E89094C44Da98b954EedeAC495271d0F'
+    uniswap_v3_factory_address: '0x1F98431c8aD98523631AE4a59f267346ea31F984'
+    uniswap_V3_quoter_address: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6'
+
+  mainnet-fork-dev:
+    eth_usd_price_feed: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419'
+    btc_usd_price_feed: '0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c'
+    dai_usd_price_feed: '0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9'
+    weth_token: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
+    dai_token: '0x6B175474E89094C44Da98b954EedeAC495271d0F'
+    uniswap_v3_factory_address: '0x1F98431c8aD98523631AE4a59f267346ea31F984'
+    uniswap_V3_quoter_address: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6'
+
+  optimism-test:
+    eth_usd_price_feed: '0x7f8847242a530E809E17bF2DA5D2f9d2c4A43261'
+    btc_usd_price_feed: '0xd9BdB42229F1aefe47Cdf028408272686445D3ff'
+    aave_usd_price_feed: '0xc051eCEaFd546e0Eb915a97F4D0643BEd7F98a11'
+    weth_token: '0xbC6F6b680bc61e30dB47721c6D1c5cde19C1300d'
+    dai_token: '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1'
+    uniswap_v3_factory_address: '0x1F98431c8aD98523631AE4a59f267346ea31F984'
+    uniswap_V3_quoter_address: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6'
+
+  optimism-main:
+    eth_usd_price_feed: '0x13e3Ee699D1909E989722E753853AE30b17e08c5'
+    btc_usd_price_feed: '0xD702DD976Fb76Fffc2D3963D037dfDae5b04E593'
+    aave_use_price_feed: '0x338ed6787f463394D24813b297401B9F05a8C9d1'
+    uniswap_v3_factory_address: '0x1F98431c8aD98523631AE4a59f267346ea31F984'
+    uniswap_V3_quoter_address: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6'
+
+  kovan:
+    eth_usd_price_feed: '0x9326BFA02ADD2366b30bacB125260Af641031331'
+    btc_usd_price_feed: '0x6135b13325bfC4B00278B4abC5e20bbce2D6580e'
+    link_usd_price_feed: '0x396c5E36DD0a0F5a5D33dae44368D4193f69a1F0'
+    dai_usd_price_feed: '0x777A68032a88E5A84678A77Af2CD65A7b3c0775a'
+    link_eth_price_feed: '0x3Af8C569ab77af5230596Acf0E8c2F9351d24C38'
+    weth_token: '0xd0A1E359811322d97991E03f863a0C30C2cF029C'
+    dai_token: '0xC4375B7De8af5a38a93548eb8453a498222C4fF2'
+    link_token: '0xa36085F69e2889c224210F603D836748e7dC0088'
+    uniswap_v3_factory_address: '0x1F98431c8aD98523631AE4a59f267346ea31F984'
+    uniswap_V3_quoter_address: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6'
+wallets:
+  from_key: ${PRIVATE_KEY}
