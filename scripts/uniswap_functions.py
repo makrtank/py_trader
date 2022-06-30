@@ -28,6 +28,14 @@ def get_pools_prices_usd(token_name, usd_ref="dai"):
         f"{usd_ref}_token"
     ]
 
+    # get decimals for ERC20 usd ref
+    usd_ref_contract = interface.IERC20(usd_ref_token_address)
+    usd_decimals = usd_ref_contract.decimals()
+
+    # get decimals for ERC20 token
+    token_contract = interface.IERC20(token_address)
+    token_decimals = token_contract.decimals()
+
     # find pools
     pool_addresses = find_pool_addresses(token_address, usd_ref_token_address)
     pools = get_pools(pool_addresses)
@@ -41,21 +49,29 @@ def get_pools_prices_usd(token_name, usd_ref="dai"):
         pool_info["token0"] = pools[fee].token0()
         pool_info["token1"] = pools[fee].token1()
 
+        token_numerator = True if pool_info["token1"] == token_address else False
+        decimals = (
+            usd_decimals - token_decimals
+            if token_numerator
+            else token_decimals - usd_decimals
+        )
+
         sqrtPriceX96 = slot0[0]
 
         # from Uniswap docs: sqrtPriceX96 = sqrt(price) * 2 ** 96
+        # sqrt(token1/token0) Q64.96 value
+
         price = sqrtPriceX96**2
         price = price >> 96
         # switch to float in case the ratio is < 1
         price /= 2**96
-        # check if dai is numerator, if so invert price to be $DAI per ETH
-        # price is supposed to be token1/token0 but isn't for mainnet DAI/ETH pool
-        # if str(token1) == str(config["networks"][network.show_active()]["dai_token"]):
-        # fixme: This can't be right.. dangerous for general purpose
-        if price < 1:
-            price = 1 / price
+
+        price = 1 / price if token_numerator else price
+
+        price /= 10**decimals
+
         pool_info["price"] = price
-        print(f"pool_info: {pool_info}")
+        # print(f"pool_info: {pool_info}")
         pool_list.append(pool_info)
     return pool_list
 
@@ -89,7 +105,7 @@ def find_pool_addresses(token_address0, token_address1):
         pool_address = uniswap_factory.getPool(token_address0, token_address1, fee)
 
         if str(pool_address) != constants.ADDRESS_ZERO:
-            print(f"Fee: {fee}, Addr: {pool_address}")
+            # print(f"Fee: {fee}, Addr: {pool_address}")
             address_by_fee[fee] = pool_address
 
     return address_by_fee

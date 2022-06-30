@@ -8,13 +8,14 @@ def main():
 
     # list out prices from Chainlink and Uniswap pools by fee
     token_name = "weth"
-
+    usd_ref = "dai"
     chainlink_price = check_price_usd_chainlink(token_name)
-    uniswap_pools = uniswap.get_pools_prices_usd(token_name)
+    uniswap_pools = uniswap.get_pools_prices_usd(token_name, usd_ref=usd_ref)
+    print(f"Price Check for: {token_name.upper()}")
     print("Chainlink Oracle")
     print(f"Price:  {chainlink_price}")
 
-    print("Uniswap Pools")
+    print(f"Uniswap Pools using USD reference: {usd_ref.upper()}")
     for pool in uniswap_pools:
         print(f"Price:  {pool['price']}      Pool Fee: {pool['fee']}")
 

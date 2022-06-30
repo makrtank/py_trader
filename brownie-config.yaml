@@ -15,6 +15,7 @@ networks:
     dai_usd_price_feed: '0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9'
     weth_token: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
     dai_token: '0x6B175474E89094C44Da98b954EedeAC495271d0F'
+    usdc_token: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
     uniswap_v3_factory_address: '0x1F98431c8aD98523631AE4a59f267346ea31F984'
     uniswap_V3_quoter_address: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6'
 
@@ -24,6 +25,7 @@ networks:
     dai_usd_price_feed: '0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9'
     weth_token: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
     dai_token: '0x6B175474E89094C44Da98b954EedeAC495271d0F'
+    usdc_token: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
     uniswap_v3_factory_address: '0x1F98431c8aD98523631AE4a59f267346ea31F984'
     uniswap_V3_quoter_address: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6'
 
@@ -54,5 +56,8 @@ networks:
     link_token: '0xa36085F69e2889c224210F603D836748e7dC0088'
     uniswap_v3_factory_address: '0x1F98431c8aD98523631AE4a59f267346ea31F984'
     uniswap_V3_quoter_address: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6'
+  
+  goerli:
+    usdc_token: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F'
 wallets:
   from_key: ${PRIVATE_KEY}
