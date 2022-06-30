@@ -9,9 +9,66 @@ fees_bips = [
     500,
     100,
 ]  # 1%, 0.3%, 0.05%, 0.01%, may change in the future from goverance votes
+# Returns list of Pool dicts
+# Pool
+#   fee
+#   token0 address
+#   token1 address
+#   price
 
 
-def find_pools(token_address0, token_address1):
+def get_pools_prices_usd(token_name, usd_ref="dai"):
+    # check vs usdc or dai
+    # todo: add USDC token addresses to brownie-config
+    assert usd_ref in ["dai", "usdc"], "Only DAI and USDC supported for USD reference"
+
+    # check if token address known
+    token_address = config["networks"][network.show_active()][f"{token_name}_token"]
+    usd_ref_token_address = config["networks"][network.show_active()][
+        f"{usd_ref}_token"
+    ]
+
+    # find pools
+    pool_addresses = find_pool_addresses(token_address, usd_ref_token_address)
+    pools = get_pools(pool_addresses)
+    pool_list = []
+    # get ratio, token0, token1 from each pool
+    for fee in pools:
+        slot0 = pools[fee].slot0()
+        # check which token is token1
+        pool_info = {}
+        pool_info["fee"] = fee
+        pool_info["token0"] = pools[fee].token0()
+        pool_info["token1"] = pools[fee].token1()
+
+        sqrtPriceX96 = slot0[0]
+
+        # from Uniswap docs: sqrtPriceX96 = sqrt(price) * 2 ** 96
+        price = sqrtPriceX96**2
+        price = price >> 96
+        # switch to float in case the ratio is < 1
+        price /= 2**96
+        # check if dai is numerator, if so invert price to be $DAI per ETH
+        # price is supposed to be token1/token0 but isn't for mainnet DAI/ETH pool
+        # if str(token1) == str(config["networks"][network.show_active()]["dai_token"]):
+        # fixme: This can't be right.. dangerous for general purpose
+        if price < 1:
+            price = 1 / price
+        pool_info["price"] = price
+        print(f"pool_info: {pool_info}")
+        pool_list.append(pool_info)
+    return pool_list
+
+
+def get_pools(_pool_addresses):
+    pools = {}
+    for fee in _pool_addresses:
+        pools[fee] = interface.IUniswapV3Pool(_pool_addresses[fee])
+
+    return pools
+
+
+def find_pool_addresses(token_address0, token_address1):
     uniswap_factory = interface.IUniswapV3Factory(
         config["networks"][network.show_active()]["uniswap_v3_factory_address"]
     )
@@ -157,7 +214,5 @@ def swap_tokens(
 
 
 def main():
-    find_pools(
-        config["networks"][network.show_active()]["weth_token"],
-        config["networks"][network.show_active()]["dai_token"],
-    )
+
+    get_pools_prices_usd("weth")
