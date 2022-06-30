@@ -19,7 +19,6 @@ fees_bips = [
 
 def get_pools_prices_usd(token_name, usd_ref="dai"):
     # check vs usdc or dai
-    # todo: add USDC token addresses to brownie-config
     assert usd_ref in ["dai", "usdc"], "Only DAI and USDC supported for USD reference"
 
     # check if token address known
@@ -43,12 +42,13 @@ def get_pools_prices_usd(token_name, usd_ref="dai"):
     # get ratio, token0, token1 from each pool
     for fee in pools:
         slot0 = pools[fee].slot0()
-        # check which token is token1
+
         pool_info = {}
         pool_info["fee"] = fee
         pool_info["token0"] = pools[fee].token0()
         pool_info["token1"] = pools[fee].token1()
 
+        # check which token is token1 for the numerator of the price ratio
         token_numerator = True if pool_info["token1"] == token_address else False
         decimals = (
             usd_decimals - token_decimals
